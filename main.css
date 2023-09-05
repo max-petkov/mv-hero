@@ -4,6 +4,14 @@
   box-sizing: border-box;
 }
 
+body {
+    background-color: #00AD68;
+}
+
+#loom-companion-mv3 {
+    display: none;
+}
+
 section {
   width: 100%;
   min-height: 100vh;
@@ -31,18 +39,32 @@ section {
   left: 0;
 }
 
-/* Phone */
-
 [data-img="visa"],
 [data-img="payment"] {
   z-index: 1;
-  filter: drop-shadow(12.79px -15.99px 22px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(12.79px -15.99px 22px rgba(33, 36, 41, 0.2));
   will-change: filter;
 }
 
-[data-img="phone"] {
+[data-img="phone"],
+[data-img="mac"] {
   z-index: 0;
 }
-/* Phone */
+
+[data-img="bottom-right"],
+[data-img="top-right"],
+[data-img="top-middle"],
+[data-img="middle-middle"],
+[data-img="bottom-middle"],
+[data-img="top-left"] {
+  z-index: 1;
+  filter: drop-shadow(41px -31px 29px rgba(33, 36, 41, 0.1));
+  will-change: filter;
+}
+
+.images [data-img] {
+    opacity: 0;
+    visibility: hidden;
+}
 
 /* Hero Image */
