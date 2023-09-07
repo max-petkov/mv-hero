@@ -1,23 +1,16 @@
-phone();
-desktop();
+hero();
 
-function phone() {
-    const svg = document.querySelector(".phone svg");
-    const imgs = document.querySelectorAll(".phone .images [data-img]");
-    
+function hero() {
+    const svg = document.querySelector(".hero-interactive svg");
+    const imgs = document.querySelectorAll(".hero-interactive .images [data-img]");
+
     svg.addEventListener("load", function(e) {
         setPosition(imgs, svg);
-        animationEnterPhone(imgs);
-    });
-}
-
-function desktop() {
-    const svg = document.querySelector(".desktop svg");
-    const imgs = document.querySelectorAll(".desktop .images [data-img]");
-    
-    svg.addEventListener("load", function(e) {
-        setPosition(imgs,svg);
-        animationEnterDesktop(imgs);
+        animationEnter();
+        
+        onResize(function() {
+            setPosition(imgs, svg)
+        });
     });
 }
 
@@ -58,34 +51,45 @@ function setPosition(imgs, svg) {
     });
 }
 
-function animationEnterPhone(imgs) {
-    const cardVisa = document.querySelector(".phone [data-img='visa']");
-    const cardPayment = document.querySelector(".phone [data-img='payment']");
-    const phone = document.querySelector(".phone [data-img='phone']");
-    const tl = gsap.timeline({defaults: {
-        duration: 1.2,
-        ease: Expo.easeInOut,
-    }});
+function animationEnter() {
+    const master = gsap.timeline();
 
-    tl
-    .to(imgs, {autoAlpha: 1, duration: 1})
-    .fromTo(phone, { x: "25%"}, { x: 0}, "<")
-    .fromTo([cardVisa,cardPayment], { scale: 0}, { scale: 1, ease: Back.easeOut.config(0.7), duration: 0.6, stagger: 0.1}, "<50%")
-    .fromTo(cardVisa, {x: 0, y: 0, scale: 1}, {scale: 1.2, x: -8, y: 0, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut})
-    .fromTo(cardPayment, {x: 0, y: 0, scale: 1}, {scale: 1.2, x: 8, y: 20, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut}, "<")
-    .fromTo(phone, {scale: 1, x: 0, y:0}, {scale: 0.8, x: 20, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut}, "<")
-}
+    master
+    .add(macAnimation())
+    .add(phoneAnimation(), "<")
+    
+    function phoneAnimation() {
+        const cardVisa = document.querySelector(".hero-interactive [data-img='visa']");
+        const cardPayment = document.querySelector(".hero-interactive [data-img='payment']");
+        const phone = document.querySelector(".hero-interactive [data-img='phone']");
+        const tl = gsap.timeline({defaults: {
+            duration: 1.2,
+            ease: Expo.easeInOut,
+        }});
+    
+        tl
+        .fromTo(phone, { x: "25%", autoAlpha: 0}, { x: 0, autoAlpha: 1, delay: 1})
+        .fromTo([cardVisa,cardPayment], { scale: 0, autoAlpha: 0}, { autoAlpha: 1, scale: 1, ease: Back.easeOut.config(0.7), duration: 0.6, stagger: 0.1}, "<50%")
+        .fromTo(cardVisa, {x: 0, y: 0, scale: 1}, {scale: 1.2, x: -8, y: 0, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut})
+        .fromTo(cardPayment, {x: 0, y: 0, scale: 1}, {scale: 1.2, x: 8, y: 20, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut}, "<")
+        .fromTo(phone, {scale: 1, x: 0, y:0}, {scale: 0.9, x: 20, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut}, "<");
 
-function animationEnterDesktop(imgs) {
-    const desktop = document.querySelector(".desktop [data-img='mac']");
-    const panels = document.querySelectorAll(".desktop [data-img]:not([data-img='mac'])");
-    const tl = gsap.timeline({defaults: {
-        duration: 1.2,
-        ease: Expo.easeInOut,
-    }});
+        return tl;
+    }
 
-    tl
-    .to(imgs, {autoAlpha: 1, duration: 1})
-    .fromTo(desktop, { x: "15%"}, { x: 0}, "<")
-    .fromTo(panels, { scale: 0}, { scale: 1, ease: Back.easeOut.config(0.7), duration: 0.6, stagger: 0.05}, "<50%")
+    function macAnimation() {
+        const desktop = document.querySelector(".hero-interactive [data-img='mac']");
+        const panels = document.querySelectorAll(".hero-interactive [data-img]:not([data-img='mac'], [data-img='phone'], [data-img='visa'], [data-img='payment'])");
+        const tl = gsap.timeline({defaults: {
+            duration: 1.2,
+            ease: Expo.easeInOut,
+        }});
+    
+        tl
+        .to([desktop, panels], {autoAlpha: 1, duration: 1})
+        .fromTo(desktop, { x: "15%"}, { x: 0}, "<")
+        .fromTo(panels, { scale: 0}, { scale: 1, ease: Back.easeOut.config(0.7), duration: 0.6, stagger: 0.05}, "<50%");
+
+        return tl;
+    }
 }
