@@ -16,7 +16,8 @@ function desktop() {
     const imgs = document.querySelectorAll(".desktop .images [data-img]");
     
     svg.addEventListener("load", function(e) {
-        setPosition(imgs,svg)
+        setPosition(imgs,svg);
+        animationEnterDesktop(imgs);
     });
 }
 
@@ -60,15 +61,31 @@ function setPosition(imgs, svg) {
 function animationEnterPhone(imgs) {
     const cardVisa = document.querySelector(".phone [data-img='visa']");
     const cardPayment = document.querySelector(".phone [data-img='payment']");
-    const mobile = document.querySelector(".phone [data-img='phone']");
+    const phone = document.querySelector(".phone [data-img='phone']");
     const tl = gsap.timeline({defaults: {
         duration: 1.2,
-        ease: Expo.easeInOut
+        ease: Expo.easeInOut,
     }});
 
     tl
     .to(imgs, {autoAlpha: 1, duration: 1})
-    .fromTo(mobile, { x: "25%"}, { x: 0}, "<")
-    .fromTo(cardVisa, { scale: 0}, { scale: 1, ease: Back.easeOut.config(1.1), duration: 0.6}, "<50%")
-    .fromTo(cardPayment, { scale: 0}, { scale: 1, ease: Back.easeOut.config(1.1), duration: 0.6}, "<")
+    .fromTo(phone, { x: "25%"}, { x: 0}, "<")
+    .fromTo([cardVisa,cardPayment], { scale: 0}, { scale: 1, ease: Back.easeOut.config(0.7), duration: 0.6, stagger: 0.1}, "<50%")
+    .fromTo(cardVisa, {x: 0, y: 0, scale: 1}, {scale: 1.2, x: -8, y: 0, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut})
+    .fromTo(cardPayment, {x: 0, y: 0, scale: 1}, {scale: 1.2, x: 8, y: 20, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut}, "<")
+    .fromTo(phone, {scale: 1, x: 0, y:0}, {scale: 0.8, x: 20, repeat: -1, yoyo: true, duration: 20, ease: Sine.easeInOut}, "<")
+}
+
+function animationEnterDesktop(imgs) {
+    const desktop = document.querySelector(".desktop [data-img='mac']");
+    const panels = document.querySelectorAll(".desktop [data-img]:not([data-img='mac'])");
+    const tl = gsap.timeline({defaults: {
+        duration: 1.2,
+        ease: Expo.easeInOut,
+    }});
+
+    tl
+    .to(imgs, {autoAlpha: 1, duration: 1})
+    .fromTo(desktop, { x: "15%"}, { x: 0}, "<")
+    .fromTo(panels, { scale: 0}, { scale: 1, ease: Back.easeOut.config(0.7), duration: 0.6, stagger: 0.05}, "<50%")
 }
