@@ -76,5 +76,16 @@ section {
   width: 100%;
   height: auto;
 }
+[data-img="top-right"]{
+  z-index: 3;
+}
+
+[data-img='visa'] {
+  transform: translate(calc(2 * var(--x)), var(--y));
+}
+
+[data-img='payment'] {
+  transform: translate(calc(-2 * var(--x)), calc(-1 * var(--y)));
+}
 
 /* Hero Image */
