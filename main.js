@@ -67,6 +67,7 @@ function animationEnter() {
             duration: 1.2,
             ease: Expo.easeInOut,
         }});
+
     
         tl
         .fromTo(phone, { x: "25%", autoAlpha: 0}, { x: 0, autoAlpha: 1, delay: 1})
@@ -79,7 +80,7 @@ function animationEnter() {
             ease: Back.easeOut.config(0.7), 
             duration: 0.6, 
             stagger: 0.1,
-            onComplete: () => gsap.set([cardVisa,cardPayment], {clearProps: "transform"})
+            onComplete: () => gsap.set(phone, {clearProps: "transform"})
         }, "<50%")
 
         return tl;
@@ -105,7 +106,7 @@ function animationEnter() {
 
         tl
         .to([desktop, panels], {autoAlpha: 1, duration: 1})
-        .fromTo(desktop, { x: "15%"}, { x: 0}, "<")
+        .fromTo(desktop, { x: "15%"}, { x: 0, onComplete: () => gsap.set(desktop, {clearProps: "transform"})}, "<")
         .fromTo(panels, {  scale: 0}, { scale: 1, ease: Back.easeOut.config(0.7), duration: 0.6, stagger: 0.05,}, "<50%")
         .fromTo(bars, {autoAlpha: 0,height: 0}, {autoAlpha: 1,height: function(i, el) { return el.getAttribute("data-h-bar");},stagger: 0.1})
         .fromTo(lines, {
@@ -133,23 +134,27 @@ function animationEnter() {
             repeatDelay: 2,
             onRepeat: function() {
                 const yoyoBack = this.iteration() % 2 === 0;
+
                 if(yoyoBack) {
-                    gsap.to(bars, {
+                    const tl = gsap.timeline();
+                    tl.to(bars, {
                         height: 0,
                         stagger: {
                             each: 0.1,
                             from: "end",
                         },
-                    })
-                    return;
+                        duration: 0.6
+                    });
                 } else {
-                    gsap.to(bars, {
+                    const tl = gsap.timeline();
+                    tl.to(bars, {
                         height: function(i, el) { 
                             const randomHeight = gsap.utils.random( Number(el.getAttribute("data-h-bar")) / 4, Math.max(...barsHeight));
                             return randomHeight;
                         },
                         stagger: 0.1,
-                    })
+                        duration: 0.6
+                    });
                 }
             }
         }, "<25%")
@@ -169,7 +174,7 @@ function mouseMove() {
 
     section.addEventListener("mousemove", function(e) {
         move.x = ((e.clientX / window.innerWidth) - 0.5) * 5;
-        move.y = ((e.clientX / window.innerWidth) - 0.5) * 5;
+        move.y = ((e.clientY / window.innerHeight) - 0.5) * 5;
     });
 
     function animate() {

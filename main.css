@@ -80,11 +80,11 @@ section {
   z-index: 3;
 }
 
-[data-img='visa'] {
+[data-img='phone'] {
   transform: translate(calc(2 * var(--x)), var(--y));
 }
 
-[data-img='payment'] {
+[data-img='mac'] {
   transform: translate(calc(-2 * var(--x)), calc(-1 * var(--y)));
 }
 
